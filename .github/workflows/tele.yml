@@ -1,0 +1,15 @@
+name: Newman Test Run
+on:
+  push:
+    branches:
+    - master
+jobs:
+  newman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+      - run: npm install -g newman
+      - run: newman run "Telesoftas.postman_collection.json" --environment "Telesoftas.postman_environment.json"
