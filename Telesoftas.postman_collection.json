@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "690a7392-0090-471f-9a11-8ab39aa9b323",
+		"name": "Telesoftas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7425350"
+	},
+	"item": [
+		{
+			"name": "Login Successful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"token\", jsonData.accessToken);",
+							"",
+							"",
+							"pm.test(\"Appropriate Success Status Code Returned\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Value Returned For Token\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.accessToken).to.not.empty",
+							"});",
+							"",
+							"",
+							"pm.test(\"User's Email Returned\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.user.email).to.eql(pm.variables.get(\"email\"));",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"email\": \"{{email}}\",\n\"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/auth/login",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Collection List - Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Appropriate Success Status Code Returned\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Data to be An Array\", function () {",
+							"    pm.expect(jsonData.regular.data).to.be.an(\"array\") ",
+							"});",
+							"",
+							"pm.test(\"Data to have Object\", function () {   ",
+							"    pm.expect(jsonData.regular.data[1].hasOwnProperty('id')).to.be.true;",
+							"     pm.expect(jsonData.regular.data[1].hasOwnProperty('title')).to.be.true;",
+							"      pm.expect(jsonData.regular.data[1].hasOwnProperty('imageUrls')).to.be.true;",
+							"      pm.expect(jsonData.regular.data[1].hasOwnProperty('quizCount')).to.be.true;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/collections",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"collections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Collection - Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Appropriate Success Status Code Returned\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test('Image URL Returned for Quiz In The Collection', function() {",
+							"    _.each(jsonData.imageUrls,(imageurl) => {",
+							"        pm.expect(imageurl).to.include('https://content.quizmart.io/images')",
+							"    });",
+							"})",
+							"",
+							"pm.test(\"Appropriate Quiz Count\", function () {",
+							"    pm.expect(jsonData.quizCount).to.eql(jsonData.imageUrls.length);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"quizIds\": [717,718],\n\"title\": \"JPT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api/v1/collections",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"collections"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
