@@ -1,0 +1,20 @@
+{
+  "name": "telesoftas-selenium",
+  "author": "Adewale A",
+  "version": "1.0.0",
+  "description": "Telesoftas - autotest for website using selenium framework ",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive --timeout 200000 test.js"
+  },
+  "dependencies": {
+    "chromedriver": "^2.42.1",
+    "selenium-webdriver": "^4.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
